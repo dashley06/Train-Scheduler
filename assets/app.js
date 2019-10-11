@@ -41,41 +41,56 @@ $("#submit-button").on("click", function (event) {
           firstTrain: firstTrain
      });
 
-     //$("#trainNameInput").val("");
-     //$("#destinationInput").val("");
-     //$("#freqInput").val("");
-     //$("#firstTrainInput").val("");
   });
 
   //function runs on new child added
   database.ref().on("child_added", function(snapshot){
-      //make sure it works
-      console.log(snapshot.val());
+      //console.log(snapshot.val());
 
-      var trainFrequencyData = snapshot.val().freqMin
-      var firstTrainData = snapshot.val().firstTrain
+        var trainFrequencyData = snapshot.val().freqMin
+        console.log("!!!", trainFrequencyData);
+        var firstTrainData = snapshot.val().firstTrain
 
-      //split hours from minutes
-        var timeArr = firstTrainData.split(":");
-        var firstTimeConverted = moment(firstTrainData, "hh:mm").subtract(1, "years");
+        console.log("!!!!!", firstTrainData)
+
+        var firstTimeConverted = moment(firstTrainData, "HH:mm").subtract(1, "years");
+        console.log(firstTimeConverted, "firstTimeConvert")
         var currentTime = moment();
-   
 
       // Difference between the times
-      var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-   ;
-      var remainder = diffTime % freqMin;
-      var tMinutesforTrain = freqMin - remainder;
-      var nextTrain = moment().add(tMinutesforTrain, "minutes");
-     
+        var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+        console.log(diffTime, "differ")
+        var remainder = diffTime % freqMin;
+        console.log(remainder, "remainder")
+        var tMinutesforTrain = freqMin - remainder;
+        console.log(tMinutesforTrain, "min for train")
+        var nextTrain = moment().add(tMinutesforTrain, "minutes");
      
       $("#trainNameDisplay").append(snapshot.val().trainName + "<hr>")
       $("#destination").append(snapshot.val().destination + "<hr>")
       $("#trainFrequency").append(snapshot.val().freqMin + "<hr>")
-      $("#firstTrain").append(snapshot.val().firstTrain + "<hr>")
-
-      //get the val of minsaway and append it to The minsAway
+      $("#firstTrain").append(firstTrainData + "<hr>")
       $("#minAway").append(tMinutesforTrain + "<hr>")
-      
       $("#nextArrival").append(moment(nextTrain).format("hh:mm") + "<hr>")
+     
+      //create removal button
+      var remove = $("<button>");
+       $("#remove").append(remove)
+       $("#remove").append("<hr>")
+      remove.addClass("removeButton").attr("data-key")
+      remove.text("Remove");
+
+$(".removeButton").on("click", function(event){
+  event.preventDefault();
+  removeRow(); 
+  console.log("!!!");
+});
+
+function removeRow() {
+  $(".row" + $(this).attr("data-key")).empty();
+  database.ref().child($(this).attr("data-key")).empty();
+  console.log(this);
+}; 
+     
   });
+
