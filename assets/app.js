@@ -48,31 +48,44 @@ $("#submit-button").on("click", function (event) {
       //console.log(snapshot.val());
 
         var trainFrequencyData = snapshot.val().freqMin
-        console.log("!!!", trainFrequencyData);
+        console.log("Train Frequency", trainFrequencyData);
+
         var firstTrainData = snapshot.val().firstTrain
 
-        console.log("!!!!!", firstTrainData)
+              console.log("first train value", firstTrainData)
 
-        var firstTimeConverted = moment(firstTrainData, "HH:mm").subtract(1, "years");
-        console.log(firstTimeConverted, "firstTimeConvert")
+        var firstTimeConverted = moment(firstTrainData, "hh:mm").subtract(1, "years");
+              console.log("firstTimeConvert", firstTimeConverted)
+        
         var currentTime = moment();
 
       // Difference between the times
-        var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-        console.log(diffTime, "differ")
+        var diffTime = moment().diff(moment(firstTrainData), "minutes");
+              console.log("difference in time", diffTime)
+
         var remainder = diffTime % freqMin;
-        console.log(remainder, "remainder")
+              console.log(remainder, "remainder")
+
         var tMinutesforTrain = freqMin - remainder;
-        console.log(tMinutesforTrain, "min for train")
-        var nextTrain = moment().add(tMinutesforTrain, "minutes");
-     
+              console.log(tMinutesforTrain, "min for train")
+
+        var nextTrain = moment().add(tMinutesforTrain, "minutes").format("hh:mm a");
+              console.log("Next Train", nextTrain)
+
       $("#trainNameDisplay").append(snapshot.val().trainName + "<hr>")
       $("#destination").append(snapshot.val().destination + "<hr>")
       $("#trainFrequency").append(snapshot.val().freqMin + "<hr>")
-      $("#firstTrain").append(firstTrainData + "<hr>")
+      $("#firstTrain").append(firstTimeConverted + "<hr>")
       $("#minAway").append(tMinutesforTrain + "<hr>")
       $("#nextArrival").append(moment(nextTrain).format("hh:mm") + "<hr>")
      
+    // Clears all of the text-boxes
+      $("#trainInput").val("");
+      $("#destinationInput").val("");
+      $("#freqInput").val("");
+      $("#firstTrainInput").val("");
+
+
       //create removal button
       var remove = $("<button>");
        $("#remove").append(remove)
@@ -82,15 +95,13 @@ $("#submit-button").on("click", function (event) {
 
 $(".removeButton").on("click", function(event){
   event.preventDefault();
-  removeRow(); 
-  console.log("!!!");
+   $(this).closest("tr").remove(); 
+    alert("Deleted!");
+
+
+
 });
 
-function removeRow() {
-  $(".row" + $(this).attr("data-key")).empty();
-  database.ref().child($(this).attr("data-key")).empty();
-  console.log(this);
-}; 
      
   });
 
