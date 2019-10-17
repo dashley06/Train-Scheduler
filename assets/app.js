@@ -40,9 +40,6 @@ $("#submit-button").on("click", function (event) {
           firstTrain: firstTrain
  });
 
-});
-
-
 
   //function runs on new child added
   database.ref().on("child_added", function(snapshot){
@@ -50,7 +47,7 @@ $("#submit-button").on("click", function (event) {
       var firstTime = firstTrain;
             console.log("first train", firstTime)
     
-      var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+      var firstTimeConverted = moment(firstTime, "hh:mm").subtract(1, "years");
             console.log(firstTimeConverted, "First time Converted");
   
       // Current Time
@@ -71,7 +68,7 @@ $("#submit-button").on("click", function (event) {
   
       
       var nextTrain = moment().add(tMinutes, "minutes");
-            console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
+            console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
   
       $("#trainNameDisplay").append(snapshot.val().trainName + "<hr>")
@@ -79,7 +76,7 @@ $("#submit-button").on("click", function (event) {
       $("#trainFrequency").append(snapshot.val().tFrequency + "<hr>")
       $("#firstTrain").append(firstTrain + "<hr>")
       $("#minAway").append(tMinutes + "<hr>")
-      $("#nextArrival").append(moment(nextTrain).format("HH:mm") + "<hr>");
+      $("#nextArrival").append(moment(nextTrain).format("hh:mm") + "<hr>");
       
 
     // Clears all of the text-boxes
@@ -91,7 +88,8 @@ $("#submit-button").on("click", function (event) {
 
  //create removal button
       var remove = $("<button>");
-      $("#remove").append(remove + "<hr>");
+      $("#remove").append(remove);
+      $("#remove").append("<hr>");
       remove.addClass("removeButton").attr("data-key");
       remove.text("Remove");
 
@@ -105,7 +103,7 @@ $("#submit-button").on("click", function (event) {
   });  
 
 
-
+});
 
 
 
