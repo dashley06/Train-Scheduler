@@ -31,15 +31,19 @@ $("#submit-button").on("click", function (event) {
       trainName = $("#trainInput").val().trim();
       destination = $("#destinationInput").val().trim();
       tFrequency = $("#freqInput").val().trim();
-      firstTrain = $("#firstTrainInput").val().trim()
-//update variables with database
+      firstTrain = $("#firstTrainInput").val().trim();
+      
       database.ref().push({
-          trainName: trainName,
-          destination: destination,
-          tFrequency: tFrequency,
-          firstTrain: firstTrain
+            trainName: trainName,
+            destination: destination,
+            tFrequency: tFrequency,
+            firstTrain: firstTrain 
+    })
+
+    
  });
 
+ //update variables with database
 
   //function runs on new child added
   database.ref().on("child_added", function(snapshot){
@@ -50,7 +54,7 @@ $("#submit-button").on("click", function (event) {
       var firstTimeConverted = moment(firstTime, "hh:mm").subtract(1, "years");
             console.log(firstTimeConverted, "First time Converted");
   
-      // Current Time
+ // Current Time
       var currentTime = moment(new Date());
             console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
   
@@ -86,7 +90,7 @@ $("#submit-button").on("click", function (event) {
       $("#firstTrainInput").val("");
 });
 
- //create removal button
+     //create removal button
       var remove = $("<button>");
       $("#remove").append(remove);
       $("#remove").append("<hr>");
@@ -94,17 +98,13 @@ $("#submit-button").on("click", function (event) {
       remove.text("Remove");
 
       $(".removeButton").on("click", function(event){
-      $(this).click(function(event){
-             event.preventDefault();
+            event.preventDefault();
+      $(this).click(function(){
             $("#trainRow").remove();
             return false;
         });
            
   });  
-
-
-});
-
 
 
 });
